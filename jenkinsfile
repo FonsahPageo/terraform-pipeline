@@ -6,16 +6,6 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/FonsahPageo/terraform-pipeline.git']]])
             }
         }
-        stage('Install Terraform') {
-            steps {
-                script {
-                    def tfLatestVersion = sh(script: 'curl -s https://api.github.com/repos/hashicorp/terraform/releases/latest | grep tag_name | cut -d ":" -f 2 | cut -d "," -f 1 | xargs', returnStdout: true).trim()
-                    sh "curl -LO https://releases.hashicorp.com/terraform/${tfLatestVersion}/terraform_${tfLatestVersion}_linux_amd64.zip"
-                    sh "unzip terraform_${tfLatestVersion}_linux_amd64.zip"
-                    sh "mv terraform /usr/local/bin/"
-                }
-            }
-        }
         stage('Terraform Init') {
             steps {
                 sh 'terraform init'
