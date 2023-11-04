@@ -8,11 +8,12 @@ pipeline {
         }
         stage('Install Terraform') {
             steps {
-                sh 'apt-get update && apt-get install -y wget unzip' // Install required dependencies
-                sh 'wget https://releases.hashicorp.com/terraform/1.6.3/terraform_1.6.3_linux_amd64.zip' // Download Terraform binary
-                sh 'unzip terraform_1.6.3_linux_amd64.zip' // Unzip Terraform binary
-                sh 'mv terraform /usr/local/bin/' // Move Terraform binary to a directory in the system PATH
-                sh 'terraform version' // Verify Terraform installation
+                script {
+                    def tfLatestVersion = sh(script: 'curl -s https://api.github.com/repos/hashicorp/terraform/releases/latest | grep tag_name | cut -d ":" -f 2 | cut -d "," -f 1 | xargs', returnStdout: true).trim()
+                    sh "curl -LO https://releases.hashicorp.com/terraform/${tfLatestVersion}/terraform_${tfLatestVersion}_linux_amd64.zip"
+                    sh "unzip terraform_${tfLatestVersion}_linux_amd64.zip"
+                    sh "mv terraform /usr/local/bin/"
+                }
             }
         }
         stage('Terraform Init') {
