@@ -1,9 +1,9 @@
 variable "region" {
-  default = "us-east-1"
+  default = "us-east-2"
 }
 
 variable "tag" {
-  default = "Demo-Instance"
+  default = "ash-demo"
 }
 
 variable "ami_name_value" {
@@ -15,7 +15,7 @@ variable "ami_virtualization_type" {
 }
 
 variable "instance_type" {
-  default = "t2.micro"
+  default = "t2.medium"
 }
 
 variable "iscreate" {
@@ -23,13 +23,13 @@ variable "iscreate" {
 }
 
 variable "sg_id" {
-  default = "sg-0d61315e929c9b42c"
+  default = "sg-08484f5a049db1fa4"
 }
 
 
 variable "keyname" {
-  default = "EAST-KEY"
+  default = "Fonsah_key_pair_Ohio"
 }
 variable "vpc_id" {
-  default = "vpc-070c3c4ddf310be5d"
+  default = "vpc-02851b8007ea7a315"
 }
