@@ -8,7 +8,7 @@ pipeline {
         }
         stage('Install Terraform') {
             steps {
-                sh 'apt-get update && apt-get install -y wget unzip' // Install required dependencies
+                sh 'sudo apt-get update && apt-get install -y wget unzip' // Install required dependencies
                 sh 'wget https://releases.hashicorp.com/terraform/<terraform-version>/terraform_<terraform-version>_linux_amd64.zip' // Download Terraform binary
                 sh 'unzip terraform_<terraform-version>_linux_amd64.zip' // Unzip Terraform binary
                 sh 'mv terraform /usr/local/bin/' // Move Terraform binary to a directory in the system PATH
