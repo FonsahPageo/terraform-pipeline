@@ -6,44 +6,35 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/FonsahPageo/terraform-pipeline.git']]])
             }
         }
-        stage('Check Terraform Installation') {
+        stage('Terraform Init') {
             steps {
-                script {
-                    def terraformInstalled = sh(returnStdout: true, script: 'terraform --version').trim()
-                    if (terraformInstalled.startsWith('Terraform')) {
-                        echo 'Terraform is installed:'
-                        echo terraformInstalled
-                    } else {
-                        error 'Terraform is not installed. Please install Terraform on this machine.'
-                    }
-                }
+                sh 'terraform init'
             }
         }
-//         stage('Terraform Init') {
-//             steps {
-//                 sh 'terraform init'
-//             }
-//         }
-//         stage('Terraform Plan') {
-//             steps {
-//                 sh 'terraform plan'
-//             }
-//         }
-//         stage('Terraform Apply') {
-//             steps {
-//               //  input 'Deploy to AWS?'
-//                 sh 'terraform apply -auto-approve'
-//             }
-//         }
-//         // stage('Terraform Destroy') {
-//         //     steps {
-//         //         script {
-//         //             dir('path/to/terraform/config') {
-//         //                 // Execute 'terraform destroy' to destroy the infrastructure
-//         //                 sh 'terraform destroy -auto-approve'
-//         //             }
-//         //         }
-//         //     }
-//         // }
+        stage('Terraform Plan') {
+            steps {
+                sh 'terraform plan'
+            }
+        }
+        stage('Terraform Apply') {
+            steps {
+              //  input 'Deploy to AWS?'
+                sh 'terraform apply -auto-approve'
+            }
+        }
+        // stage('Terraform Destroy') {
+        //     steps {
+        //         script {
+        //             dir('path/to/terraform/config') {
+        //                 // Execute 'terraform destroy' to destroy the infrastructure
+        //                 sh 'terraform destroy -auto-approve'
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
+
+
+
+
