@@ -6,40 +6,40 @@ pipeline{
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/FonsahPageo/terraform-pipeline.git']]])
             }
         }
-        stage('Install Terraform') {
+        // stage('Install Terraform') {
+        //     steps {
+        //         sh 'apt update'
+        //         sh 'apt install -y wget unzip'
+        //         sh 'wget https://releases.hashicorp.com/terraform/1.6.3/terraform_1.6.3_linux_amd64.zip'
+        //         sh 'unzip terraform_1.6.3_linux_amd64.zip'
+        //         sh 'mv terraform /usr/local/bin/'
+        //     }
+        // }
+        //  stage('Deploy with Terraform') {
+        //     steps {
+        //         withAWS(credentials: 'aws-cred', region: 'us-east-2') {
+        //             sh 'terraform init'
+        //             sh 'terraform plan'
+        //             sh 'terraform apply -auto-approve'
+        //         }
+        //     }
+        // }
+        stage('Terraform Init') {
             steps {
-                sh 'apt update'
-                sh 'apt install -y wget unzip'
-                sh 'wget https://releases.hashicorp.com/terraform/1.6.3/terraform_1.6.3_linux_amd64.zip'
-                sh 'unzip terraform_1.6.3_linux_amd64.zip'
-                sh 'mv terraform /usr/local/bin/'
+                sh 'terraform init'
             }
         }
-         stage('Deploy with Terraform') {
+        stage('Terraform Plan') {
             steps {
-                withAWS(credentials: 'aws-cred', region: 'us-east-2') {
-                    sh 'terraform init'
-                    sh 'terraform plan'
-                    sh 'terraform apply -auto-approve'
-                }
+                sh 'terraform plan'
             }
         }
-        // stage('Terraform Init') {
-        //     steps {
-        //         sh 'terraform init'
-        //     }
-        // }
-        // stage('Terraform Plan') {
-        //     steps {
-        //         sh 'terraform plan'
-        //     }
-        // }
-        // stage('Terraform Apply') {
-        //     steps {
-        //       //  input 'Deploy to AWS?'
-        //         sh 'terraform apply -auto-approve'
-        //     }
-        // }
+        stage('Terraform Apply') {
+            steps {
+              //  input 'Deploy to AWS?'
+                sh 'terraform apply -auto-approve'
+            }
+        }
         // stage('Terraform Destroy') {
         //     steps {
         //         script {
