@@ -1,9 +1,12 @@
 pipeline{
-    agent any
-    environment {
-        AWS_ACCESS_KEY_ID = credentials('aws-cred')
-        AWS_SECRET_ACCESS_KEY = credentials('aws-cred')
+    parameters {
+        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan')
     }
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+    }
+    agent any
     stages {
         stage('Checkout') {
             steps {
@@ -40,7 +43,6 @@ pipeline{
         }
         stage('Terraform Apply') {
             steps {
-              //  input 'Deploy to AWS?'
                 sh 'terraform apply -auto-approve'
             }
         }
