@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "${var.region}"
+  region = var.region
 }
 
 data "aws_ami" "ubuntu" {
@@ -33,10 +33,10 @@ module "security_group" {
 */
 
 resource "aws_security_group" "allow_all" {
-  count       = "${var.iscreate == "" ? 1 : 0}"
+  count       = var.iscreate == "" ? 1 : 0
   name        = "instance_sg"
   description = "Allow all inbound traffic for security group"
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 0
@@ -55,9 +55,9 @@ resource "aws_security_group" "allow_all" {
 }
 
 resource "aws_instance" "web" {
-  ami                    = "${data.aws_ami.ubuntu.id}"
-  instance_type          = "${var.instance_type}"
-  key_name               = "${var.keyname}"
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = var.instance_type
+  key_name               = var.keyname
   vpc_security_group_ids = ["${var.sg_id}"]
 
   tags = {

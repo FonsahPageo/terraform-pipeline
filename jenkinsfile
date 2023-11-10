@@ -1,4 +1,4 @@
-pipeline {
+pipeline{
     agent any
     stages {
         stage('Checkout') {
@@ -6,22 +6,40 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/FonsahPageo/terraform-pipeline.git']]])
             }
         }
-        stage('Terraform Init') {
+        stage('Install Terraform') {
             steps {
-                sh 'terraform init'
+                sh 'apt update'
+                sh 'apt install -y wget unzip'
+                sh 'wget https://releases.hashicorp.com/terraform/1.6.3/terraform_1.6.3_linux_amd64.zip'
+                sh 'unzip terraform_1.6.3_linux_amd64.zip'
+                sh 'mv terraform /usr/local/bin/'
             }
         }
-        stage('Terraform Plan') {
+         stage('Deploy with Terraform') {
             steps {
-                sh 'terraform plan'
+                withAWS(credentials: 'aws-cred', region: 'us-east-2') {
+                    sh 'terraform init'
+                    sh 'terraform plan'
+                    sh 'terraform apply -auto-approve'
+                }
             }
         }
-        stage('Terraform Apply') {
-            steps {
-              //  input 'Deploy to AWS?'
-                sh 'terraform apply -auto-approve'
-            }
-        }
+        // stage('Terraform Init') {
+        //     steps {
+        //         sh 'terraform init'
+        //     }
+        // }
+        // stage('Terraform Plan') {
+        //     steps {
+        //         sh 'terraform plan'
+        //     }
+        // }
+        // stage('Terraform Apply') {
+        //     steps {
+        //       //  input 'Deploy to AWS?'
+        //         sh 'terraform apply -auto-approve'
+        //     }
+        // }
         // stage('Terraform Destroy') {
         //     steps {
         //         script {
@@ -34,7 +52,3 @@ pipeline {
         // }
     }
 }
-
-
-
-
