@@ -15,7 +15,7 @@ variable "ami_virtualization_type" {
 }
 
 variable "instance_type" {
-  default = "t2.medium"
+  default = "t2.micro"
 }
 
 variable "iscreate" {
@@ -25,7 +25,6 @@ variable "iscreate" {
 variable "sg_id" {
   default = "sg-08484f5a049db1fa4"
 }
-
 
 variable "keyname" {
   default = "Fonsah_key_pair_Ohio"
