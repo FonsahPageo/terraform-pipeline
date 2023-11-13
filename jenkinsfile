@@ -1,10 +1,6 @@
-pipeline{
+pipeline {
     parameters {
         booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan')
-    }
-    environment {
-        AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
     }
     agent any
     stages {
@@ -13,24 +9,6 @@ pipeline{
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/FonsahPageo/terraform-pipeline.git']]])
             }
         }
-        // stage('Install Terraform') {
-        //     steps {
-        //         sh 'apt update'
-        //         sh 'apt install -y wget unzip'
-        //         sh 'wget https://releases.hashicorp.com/terraform/1.6.3/terraform_1.6.3_linux_amd64.zip'
-        //         sh 'unzip terraform_1.6.3_linux_amd64.zip'
-        //         sh 'mv terraform /usr/local/bin/'
-        //     }
-        // }
-        //  stage('Deploy with Terraform') {
-        //     steps {
-        //         withAWS(credentials: 'aws-cred', region: 'us-east-2') {
-        //             sh 'terraform init'
-        //             sh 'terraform plan'
-        //             sh 'terraform apply -auto-approve'
-        //         }
-        //     }
-        // }
         stage('Terraform Init') {
             steps {
                 sh 'terraform init'
@@ -41,20 +19,20 @@ pipeline{
                 sh 'terraform plan'
             }
         }
-        stage('Terraform Apply') {
-            steps {
-                sh 'terraform apply -auto-approve'
-            }
-        }
-        // stage('Terraform Destroy') {
+        // stage('Terraform Apply') {
         //     steps {
-        //         script {
-        //             dir('path/to/terraform/config') {
-        //                 // Execute 'terraform destroy' to destroy the infrastructure
-        //                 sh 'terraform destroy -auto-approve'
-        //             }
-        //         }
+        //         sh 'terraform apply -auto-approve'
         //     }
         // }
+        stage('Terraform Destroy') {
+            steps {
+                script {
+                    dir('path/to/terraform/config') {
+                        // Execute 'terraform destroy' to destroy the infrastructure
+                        sh 'terraform destroy -auto-approve'
+                    }
+                }
+            }
+        }
     }
 }
