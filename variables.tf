@@ -3,7 +3,7 @@ variable "region" {
 }
 
 variable "tag" {
-  default = "ash-demo"
+  default = "fonsah-demo"
 }
 
 variable "ami_name_value" {
@@ -23,12 +23,12 @@ variable "iscreate" {
 }
 
 variable "sg_id" {
-  default = "sg-08484f5a049db1fa4"
+  default = "sg-0479bd5f576ff8f70"
 }
 
 variable "keyname" {
-  default = "Fonsah_key_pair_Ohio"
+  default = "fonsah_chamberlain_ohio"
 }
 variable "vpc_id" {
-  default = "vpc-02851b8007ea7a315"
+  default = "vpc-093777358669fb76d"
 }
