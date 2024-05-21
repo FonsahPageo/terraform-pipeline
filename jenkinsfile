@@ -19,20 +19,20 @@ pipeline {
                 sh 'terraform plan'
             }
         }
-        // stage('Terraform Apply') {
-        //     steps {
-        //         sh 'terraform apply -auto-approve'
-        //     }
-        // }
-        stage('Terraform Destroy') {
+        stage('Terraform Apply') {
             steps {
-                script {
-                    dir('path/to/terraform/config') {
-                        // Execute 'terraform destroy' to destroy the infrastructure
-                        sh 'terraform destroy -auto-approve'
-                    }
-                }
+                sh 'terraform apply -auto-approve'
             }
         }
+        // stage('Terraform Destroy') {
+        //     steps {
+        //         script {
+        //             dir('path/to/terraform/config') {
+        //                 // Execute 'terraform destroy' to destroy the infrastructure
+        //                 sh 'terraform destroy -auto-approve'
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
